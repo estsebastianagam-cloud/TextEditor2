@@ -1,10 +1,12 @@
 import java.util.*;  //Prueba
 import java.io.*;
+import com.murcia.utils.*;
+
 class Main {
     public static void main(String[] args) throws Exception{
         File file=new File("randomtext.txt");
         Scanner sc=new Scanner(file);
-        LinkedList<StringBuilder> l=new LinkedList<StringBuilder>();
+        ColaEnlazada<StringBuilder> l=new ColaEnlazada<StringBuilder>();
         while(sc.hasNextLine()) {
             String line=sc.nextLine();
             String[] words=line.split("\\s");
@@ -14,8 +16,7 @@ class Main {
         }
         Editor edit=new Editor(l);
         sc=new Scanner(System.in);
-        while(true)
-        {
+        while(true){
             System.out.println("S - Save and Exit");
             System.out.println("F - Move Forward");
             System.out.println("B - Move Backward");
@@ -42,10 +43,10 @@ class Main {
     }
 }
 class Editor {
-    LinkedList<StringBuilder> l;
+    ColaEnlazada<StringBuilder> l;
     int node,position;
     FileWriter writer;
-    public Editor(LinkedList<StringBuilder> l) {
+    public Editor(ColaEnlazada<StringBuilder> l) {
         this.l=l;
         node=position=0;
     }
@@ -103,10 +104,11 @@ class Editor {
     }
     public void print() throws Exception{
         writer= new FileWriter("randomtext.txt");
-        for(StringBuilder i:l) {
-            writer.write(i.toString());
-            System.out.print(i);
-            if(!i.toString().equals("\n")) {
+        // for(StringBuilder i:l) {
+        for (int i = 0; i < l.size(); i++){
+            writer.write(l.get(i).toString());
+            System.out.print(l.get(i));
+            if(!l.get(i).toString().equals("\n")) {
                 writer.write(" ");
                 System.out.print(" ");
             }
